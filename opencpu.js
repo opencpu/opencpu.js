@@ -137,7 +137,7 @@
 			// show
 			updatepng();
 		});
-	};
+	}
     
 
 	  // from understore.js
@@ -157,9 +157,8 @@
 			if (callNow)
 				result = func.apply(context, args);
 			return result;
-		};
+		}
 	}
-	;
 
 	// exported functions
 	window.opencpu = {
