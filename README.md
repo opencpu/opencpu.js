@@ -15,7 +15,7 @@ Calling an R function
 
 The core of the library:
 
-    opencpu.r_fun_call( fun, [,args] [,handler] )          *returns `jqXHR`*
+    opencpu.r_fun_call( fun, [,args] [,handler] )          (returns jqXHR)
 
 This calls the R function from the current package (R package in which this application lives). Arguments:
 
@@ -41,7 +41,7 @@ Making a plot
 A nice conveniency wrapper to call a plot function in the form of a jQuery plugin.
 Will automatically display appropriately sized PNG and links to PDF and SVG.
 
-    $("#mydiv").r_fun_plot( fun, [,args] )          *returns `jqXHR`*
+    $("#mydiv").r_fun_plot( fun, [,args] )          (returns jqXHR)
 
 Calls and R function (which should produce a plot) and automatically displays appropriately sized png image plus PDF and SVG links.
 
