@@ -46,3 +46,16 @@ See the library in action in one of the apps:
  * [gitstats](https://github.com/opencpu/nabel/blob/master/inst/www/index.html#L25) (`r_fun_plot`) App based on Twitter Bootstrap
  * [stocks](https://github.com/opencpu/stocks/blob/master/inst/www/stocks.js#L248) (`r_fun_call`, `r_fun_plot`) App based on ExtJS
 
+To install any of these apps in your local R, you would do e.g:
+
+    library(devtools)
+    install_github("nabel", "opencpu")
+    
+    library(opencpu)
+    opencpu$browse("library/nabel/www")
+
+Replace `nabel` with any of the other apps. For a full list see www.github.com/opencpu. And like all OpenCPU apps, it's just a function:
+
+    library(nabel)
+    nabel()
+
