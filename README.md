@@ -35,6 +35,22 @@ Hypothetical example if the app would be in a package with a function `rnorm` si
     });
 
 
+Calling R function with JSON I/O
+--------------------------------
+
+Wrapper for the common special case where we want to get the output object from a function call in JSON format.
+
+    opencpu.r_fun_json( fun, [,args] [,handler] )         (returns jqXHR)
+
+This is a wrapper for `r_fun_call`, however the handler will be called with a JSON object (rather than a "location")
+
+    var jqxhr = opencpu.r_fun_json("rnorm", {n:10, mean:5}, function(data){
+      dosomething(data);
+    }).error(function(){
+       alert("Failed to call function: " + jqxhr.responseText);
+    });
+
+
 Making a plot
 -------------
 
