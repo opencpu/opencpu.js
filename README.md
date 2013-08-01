@@ -54,7 +54,7 @@ The function calls out to `opencpu.r_fun_plot` and hence works the same as above
 
 Hypothetical example if the app would be in a package with a function `plot`:
 
-    var jqxhr = $("#mydiv").r_fun_plot("plot", { x : [3, 5, 3, 2, 4 } })
+    var jqxhr = $("#mydiv").r_fun_plot("plot", { x : [3, 5, 3, 2, 4 ] })
        .fail(function(){alert("Failed to make plot :( " + jqxhr+responseText)});
 
 
