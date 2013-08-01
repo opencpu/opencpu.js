@@ -42,7 +42,7 @@ Wrapper for the common special case where we want to get the output object from 
 
     opencpu.r_fun_json( fun, [,args] [,handler] )         (returns jqXHR)
 
-This is a wrapper for `r_fun_call`, however the handler will be called with a JSON object (rather than a "location")
+This is a wrapper for `r_fun_call`, however the handler will be called with the JSON object which is the return value of the R function call.
 
     var jqxhr = opencpu.r_fun_json("rnorm", {n:10, mean:5}, function(data){
       dosomething(data);
