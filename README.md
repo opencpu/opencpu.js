@@ -47,7 +47,7 @@ This is a wrapper for `r_fun_call`, however the handler will be called with the 
     var jqxhr = opencpu.r_fun_json("rnorm", {n:10, mean:5}, function(data){
       dosomething(data);
     }).error(function(){
-       alert("Failed to call function: " + jqxhr.responseText);
+      alert("Failed to call function: " + jqxhr.responseText);
     });
 
 
@@ -87,6 +87,7 @@ See the library in action in one of the apps:
 To install any of these apps in your local R, you would do e.g:
 
     library(devtools)
+    install_github("opencpu", "jeroenooms")
     install_github("nabel", "opencpu")
     
     library(opencpu)
