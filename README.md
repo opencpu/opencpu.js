@@ -15,7 +15,7 @@ Calling an R function
 
 The core of the library:
 
-    opencpu.r_fun_call( fun, [,args] [,handler] )
+    opencpu.r_fun_call( fun, [,args] [,handler] )          *returns `jqXHR`*
 
 This calls the R function from the current package (R package in which this application lives). Arguments:
 
@@ -34,6 +34,28 @@ Hypothetical example if the app would be in a package with a function `rnorm` si
       alert("Failure: " + jqxhr.responseText);
     });
 
+
+Making a plot
+-------------
+
+A nice conveniency wrapper to call a plot function in the form of a jQuery plugin.
+Will automatically display appropriately sized PNG and links to PDF and SVG.
+
+    $("#mydiv").r_fun_plot( fun, [,args] )          *returns `jqXHR`*
+
+Calls and R function (which should produce a plot) and automatically displays appropriately sized png image plus PDF and SVG links.
+
+Arguments:
+
+ * `fun` - Name of the function (string). E.g: `"plot"`
+ * `args` - Object with arguments. Will be converted to JSON. E.g: `{ x: [ 1, 5, 3, 2, 5, 7, 4] }`
+
+The function calls out to `opencpu.r_fun_plot` and hence works the same as above. It also returns the `jqXHR` object (not "#mydiv").
+
+Hypothetical example if the app would be in a package with a function `plot`:
+
+    var jqxhr = $("#mydiv").r_fun_plot("plot", { x : [3, 5, 3, 2, 4 } })
+       .fail(function(){alert("Failed to make plot :( " + jqxhr+responseText)});
 
 
 
@@ -58,4 +80,6 @@ Replace `nabel` with any of the other apps. For a full list see www.github.com/o
 
     library(nabel)
     nabel()
+    ?nabel
+
 
