@@ -21,12 +21,12 @@ This calls the R function from the current package (R package in which this appl
 
  * `function` - Name of the function (string). E.g: `"rnorm"`
  * `args` - Object with arguments. Will be converted to JSON. E.g: `{n:10, mean:5}`
- * `handler` - Callback function. Callback has one argument: `Location` (Location of the resulting temporary session).
+ * `handler` - Callback function. Callback has one argument: `Location` (Path of resulting output).
 
 Note that the library by default assumes it is exactly one level deep in the package directory tree, e.g. under `/www`. 
 If you wish put the application elsewhere, you might need to modify `opencpu.r_path` accordingly. 
 
-Hypothetical example if the application would be part of a package with a function `rnorm` similar to the `stats` package: 
+Hypothetical example if the app would be in a package with a function `rnorm` similar to the `stats` one: 
 
     var jqxhr = opencpu.r_fun_call("rnorm", {n:10, mean:5}, function(location) {
       alert("Success! " + location);
