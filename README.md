@@ -1,14 +1,22 @@
 Javascript library for OpenCPU
 ------------------------------
 
-This is an early version of a Javascript client library for the OpenCPU API (www.opencpu.org).
-It is intended to be included in OpenCPU Apps: R packages that include a web application calling the OpenCPU API. 
+opencpu.js is a Javascript client library for OpenCPU (www.opencpu.org). It is a foundation for developing OpenCPU apps: R packages containing a web application that calling R functions though the OpenCPU API. 
 
-The opencpu.js library depends on jQuery and basically wraps around `$.ajax`. 
-Most functions in opencpu.js return the *jqXHR* object. This gives you full control over the ajax request.
-
-The library exports one variable to the global namespace called `opencpu`. 
+The opencpu.js library depends on jQuery and basically wraps around `$.ajax`. Most functions in opencpu.js return the *jqXHR* object. This gives you full control over the ajax request. The library exports one variable to the global namespace called `opencpu`. 
 In addition, it provides jQuery plugins which you can call on a DOM element.
+
+Getting Started
+---------------
+
+An OpenCPU app must include jQuery and opencpu.js before using OpenCPU. For example:
+
+    <script src="jquery-1.10.1.min.js"></script>
+    <script src="opencpu.js"></script>
+    <script src="myapp.js"></script>
+
+The quickest way to learn how to use opencpu.js is by looking at the [example apps](https://public.opencpu.org/apps.html). 
+There is one app called `appdemo` which specifically demonstrates some of the basic functionality of the library.
 
 Calling an R function
 ---------------------
