@@ -95,11 +95,10 @@ See the library in action in one of the apps:
 To install any of these apps in your local R, you would do e.g:
 
     library(devtools)
-    install_github("opencpu", "jeroenooms")
     install_github("nabel", "opencpu")
     
     library(opencpu)
-    opencpu$browse("library/nabel/www")
+    opencpu$browse("/library/nabel/www")
 
 Replace `nabel` with any of the other apps. For a full list see www.github.com/opencpu. And like all OpenCPU apps, it's just a function:
 
