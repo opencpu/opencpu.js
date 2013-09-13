@@ -147,6 +147,7 @@
   function r_fun_call(fun, args, handler){
     var hasfiles = false;
     var hascode = false;
+    var args = args ? args : {};
     
     //find argument types
     $.each(args, function(key, value){
