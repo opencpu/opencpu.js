@@ -145,9 +145,10 @@
   
   //Automatically determines type based on argument classes.
   function r_fun_call(fun, args, handler){
+    var iscors = (opencpu.r_path.substring(0,4) == "http");
     var hasfiles = false;
     var hascode = false;
-    var args = args ? args : {};
+    var args = args || {};
     
     //find argument types
     $.each(args, function(key, value){
@@ -161,7 +162,8 @@
     //determine type
     if(hasfiles){
       return r_fun_call_multipart(fun, args, handler);
-    } else if(hascode){
+    } else if(hascode || iscors){
+      //note: cors with application/json requires preflighting, which is supported but annoying.
       return r_fun_call_urlencoded(fun, args, handler);
     } else {
       return r_fun_call_json(fun, args, handler); 
