@@ -1,16 +1,26 @@
 /**
  * Javascript client library for OpenCPU
- * Version 0.2
+ * Version 0.3
  * Depends: jQuery
  * Requires HTML5 FormData support for file uploads
  * http://github.com/jeroenooms/opencpu.js
  * 
  * Include this file in your apps and packages. 
- * Edit r_path variable below if needed.
+ * You only need to use opencpu.seturl if this page is hosted outside of the OpenCPU package. For example:
+
+ * opencpu.seturl("/ocpu/library/mypackage/R")
+ * opencpu.seturl("https://public.opencpu.org/ocpu/library/mypackage/R")
+ * opencpu.seturl("../R") //default value
  */
 
 (function ( $ ) {
   
+  //global variable 
+  var r_cors = false;
+  var r_path = document.createElement('a');
+  r_path.href = "../R";
+
+
   //new Session()
   function Session(loc, key){
     this.loc = loc;
@@ -87,7 +97,7 @@
     var handler = handler || function(){};
     
     //set global settings
-    settings.url = settings.url || (opencpu.r_path + "/" + fun);
+    settings.url = settings.url || (r_path.href + "/" + fun);
     settings.type = settings.type || "POST";
     settings.data = settings.data || {};
     settings.dataType = settings.dataType || "text";
@@ -96,6 +106,11 @@
     var jqxhr = $.ajax(settings).done(function(){
       var loc = jqxhr.getResponseHeader('Location') || console.log("Location response header missing.");
       var key = jqxhr.getResponseHeader('X-ocpu-session') || console.log("X-ocpu-session response header missing.");
+      
+      //in case of cors we translate the relative path
+      if(r_cors){
+        loc = r_path.protocol + "//" + r_path.host + loc;
+      }
       handler(new Session(loc, key));
     }).fail(function(){
       console.log("OpenCPU error HTTP " + jqxhr.status + "\n" + jqxhr.responseText)
@@ -145,7 +160,6 @@
   
   //Automatically determines type based on argument classes.
   function r_fun_call(fun, args, handler){
-    var iscors = (opencpu.r_path.substring(0,4) == "http");
     var hasfiles = false;
     var hascode = false;
     var args = args || {};
@@ -162,7 +176,7 @@
     //determine type
     if(hasfiles){
       return r_fun_call_multipart(fun, args, handler);
-    } else if(hascode || iscors){
+    } else if(hascode || r_cors){
       //note: cors with application/json requires preflighting, which is supported but annoying.
       return r_fun_call_urlencoded(fun, args, handler);
     } else {
@@ -326,7 +340,28 @@
   var opencpu = window.opencpu;
   
   //global settings
-  opencpu.r_path = "../R";
+  opencpu.seturl = function(newpath){
+    if(!newpath.match("/R$")){
+      alert("ERROR! Trying to set R url to: " + newpath +". Path to an OpenCPU R package must end with '/R'");
+    } else {
+      r_path = document.createElement('a');
+      r_path.href = newpath;
+      r_path.href = r_path.href; //IE needs this
+
+      if(location.protocol != r_path.protocol || location.host != r_path.host){
+        r_cors = true;
+      }
+
+      if(r_cors){
+        console.log("Setting path to CORS server " + r_path.href);
+      } else {
+        console.log("Setting path to local (non-CORS) server " + r_path.href)
+      }
+      $.get(r_path.href, function(resdata){
+        console.log("Path updated. Available objects/functions:\n" + resdata);
+      });
+    }
+  }
 
   //exported functions
   opencpu.r_fun_call = r_fun_call;
