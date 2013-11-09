@@ -350,6 +350,9 @@
 
       if(location.protocol != r_path.protocol || location.host != r_path.host){
         r_cors = true;
+        if (!('withCredentials' in new XMLHttpRequest())) {
+          alert("This browser does not support CORS. Try using Firefox or Chrome.");
+        }
       }
 
       if(r_cors){
