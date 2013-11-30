@@ -1,6 +1,6 @@
 /**
  * Javascript client library for OpenCPU
- * Version 0.3
+ * Version 0.4
  * Depends: jQuery
  * Requires HTML5 FormData support for file uploads
  * http://github.com/jeroenooms/opencpu.js
@@ -24,7 +24,7 @@
   //new Session()
   function Session(loc, key){
     this.loc = loc;
-    this.key = key;
+    this.key = key; 
     
     this.getKey = function(){
       return key;
@@ -33,10 +33,31 @@
     this.getLoc = function(){
       return loc;
     }
-    
-    this.getFile = function(path){
+
+    this.getFileURL = function(path){
       return this.getLoc() + "files/" + path;
     }
+
+    this.getFile = function(path, success){
+      var url = this.getFileURL(path)
+      return $.get(url, success);
+    }
+
+    this.getObject = function(name, data, success){
+      name = name || ".val";
+      var url = this.getLoc() + "R/" + name + "/json";
+      return $.get(url, data, success)
+    }
+
+    this.getStdout = function(success){
+      var url = this.getLoc() + "stdout/text";
+      return $.get(url, success);
+    }
+
+    this.getConsole = function(success){
+      var url = this.getLoc() + "console/text";
+      return $.get(url, success);
+    }        
   }
   
   //for POSTing raw code snippets
@@ -176,8 +197,7 @@
     //determine type
     if(hasfiles){
       return r_fun_call_multipart(fun, args, handler);
-    } else if(hascode || r_cors){
-      //note: cors with application/json requires preflighting, which is supported but annoying.
+    } else if(hascode){
       return r_fun_call_urlencoded(fun, args, handler);
     } else {
       return r_fun_call_json(fun, args, handler); 
@@ -185,7 +205,7 @@
   }    
   
   //call a function and return JSON
-  function r_fun_json(fun, args, handler){
+  function rpc(fun, args, handler){
     return r_fun_call(fun, args, function(tmp){
       $.get(tmp.getLoc() + "R/.val/json", function(data){
         handler && handler(data);
@@ -212,7 +232,7 @@
   
   //plotting widget
   //to be called on an (empty) div.
-  $.fn.r_fun_plot = function(fun, args) {
+  $.fn.rplot = function(fun, args) {
     var targetdiv = this;
     var myplot = initplot(targetdiv);
  
@@ -368,7 +388,7 @@
 
   //exported functions
   opencpu.r_fun_call = r_fun_call;
-  opencpu.r_fun_json = r_fun_json;
+  opencpu.rpc = rpc;
   
   //exported constructors
   opencpu.Session = Session;
