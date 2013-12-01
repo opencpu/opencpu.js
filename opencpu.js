@@ -389,7 +389,7 @@
   
   //exported constructors
   ocpu.Snippet = Snippet;
-  ocpu.File = Upload;
+  ocpu.Upload = Upload;
   
   //for innernetz exploder
   if (typeof console == "undefined") {
