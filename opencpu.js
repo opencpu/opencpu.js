@@ -22,10 +22,12 @@
 
 
   //new Session()
-  function Session(loc, key){
+  function Session(loc, key, txt){
     this.loc = loc;
     this.key = key; 
-    
+    this.txt = txt;
+    this.output = txt.split(/\r\n|\r|\n/g);
+
     this.getKey = function(){
       return key;
     };
@@ -72,7 +74,7 @@
   //for POSTing raw code snippets
   //new Snippet("rnorm(100)")
   function Snippet(code){
-    this.code = code;
+    this.code = code || "NULL";
     
     this.getCode = function(){
       return code;
@@ -136,12 +138,13 @@
     var jqxhr = $.ajax(settings).done(function(){
       var loc = jqxhr.getResponseHeader('Location') || console.log("Location response header missing.");
       var key = jqxhr.getResponseHeader('X-ocpu-session') || console.log("X-ocpu-session response header missing.");
+      var txt = jqxhr.responseText;
       
       //in case of cors we translate the relative path
       if(r_cors){
         loc = r_path.protocol + "//" + r_path.host + loc;
       }
-      handler(new Session(loc, key));
+      handler(new Session(loc, key, txt));
     }).fail(function(){
       console.log("OpenCPU error HTTP " + jqxhr.status + "\n" + jqxhr.responseText);
     });
