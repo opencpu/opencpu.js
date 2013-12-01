@@ -388,9 +388,8 @@
   ocpu.seturl = seturl;
   
   //exported constructors
-  ocpu.Session = Session;
   ocpu.Snippet = Snippet;
-  ocpu.Upload = Upload;
+  ocpu.File = Upload;
   
   //for innernetz exploder
   if (typeof console == "undefined") {
