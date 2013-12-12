@@ -371,13 +371,21 @@
         }
       }
 
+      if(location.protocol == "https:" && r_path.protocol != "https:"){
+        alert("Page is hosted on HTTPS but using a (non-SSL) HTTP OpenCPU server. This is insecure and most browsers will not allow this.")
+      }
+
       if(r_cors){
         console.log("Setting path to CORS server " + r_path.href);
       } else {
         console.log("Setting path to local (non-CORS) server " + r_path.href);
       }
+
+      //we use trycatch because javascript will throw an error in case CORS is refused.
       $.get(r_path.href, function(resdata){
         console.log("Path updated. Available objects/functions:\n" + resdata);
+      }).fail(function(xhr, textStatus, errorThrown){
+        alert("Connection to OpenCPU failed:\n" + textStatus + "\n" + xhr.responseText + "\n" + errorThrown);
       });
     }
   }
