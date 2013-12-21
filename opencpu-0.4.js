@@ -216,13 +216,23 @@
   
   //call a function and return JSON
   function rpc(fun, args, handler){
-    return r_fun_call(fun, args, function(session){
+  	var filter;
+    var req = r_fun_call(fun, args, function(session){
       session.getObject(function(data){
+      	filter.resolve()
         if(handler) handler(data);
       }).fail(function(){
+      	filter.reject("Failed to get JSON response for " + session.getLoc())
         console.log("Failed to get JSON response for " + session.getLoc());
       });
+    }).then(function(){ 
+    	//success?
+    	if(req.status < 300){ 
+			filter = $.Deferred();
+			return filter.promise()
+		}
     });
+    return req;
   }
   
   //plotting widget
