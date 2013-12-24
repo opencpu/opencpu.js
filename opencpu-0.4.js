@@ -1,6 +1,6 @@
 /**
  * Javascript client library for OpenCPU
- * Version 0.4.3
+ * Version 0.4.2
  * Depends: jQuery
  * Requires HTML5 FormData support for file uploads
  * http://github.com/jeroenooms/opencpu.js
@@ -210,9 +210,7 @@
     } else if(hascode){
       return r_fun_call_urlencoded(fun, args, handler);
     } else {
-      //JSON TEMPORARILY DISALBED DUE TO BUG IN LIBJSON
-      //return r_fun_call_json(fun, args, handler); 
-      return r_fun_call_urlencoded(fun, args, handler);
+      return r_fun_call_json(fun, args, handler); 
     }
   }    
   
