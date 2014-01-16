@@ -257,7 +257,7 @@
       var pngheight;
       
       var plotdiv = $('<div />').attr({
-        style: "width: 100%; height:100%; min-width: 100px; min-height: 100px; position:absolute; background-repeat:no-repeat; background-size: 100% 100%;"
+        style: "width: 100%; height:100%; min-width: 100px; min-height: 100px; position:relative; background-repeat:no-repeat; background-size: 100% 100%;"
       }).appendTo(targetdiv).css("background-image", "none");
       
       var spinner = $('<span />').attr({
