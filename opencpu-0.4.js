@@ -240,7 +240,7 @@
       myplot.setlocation(tmp.getLoc());
       
       //call success handler as well
-      cb(tmp);
+      if(cb) cb(tmp);
     }).always(function(){
       myplot.spinner.hide();      
     });
