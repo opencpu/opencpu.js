@@ -300,7 +300,7 @@ if(!window.jQuery) {
           plotdiv.css("background-image", "");
         } else {
           pdf.attr("href", Location + "graphics/last/pdf?width=11.69&height=8.27&paper=a4r").show();
-          svg.attr("href", Location + "graphics/last/svg?width=11.69&height=8.27").show();
+          svg.attr("href", Location + "graphics/last/svg?width=11&height=6").show();
           png.attr("href", Location + "graphics/last/png?width=800&height=600").show(); 
           updatepng();
         }
