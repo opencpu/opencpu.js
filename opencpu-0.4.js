@@ -1,6 +1,6 @@
 /**
  * Javascript client library for OpenCPU
- * Version 0.4.3
+ * Version 0.4.4
  * Depends: jQuery
  * Requires HTML5 FormData support for file uploads
  * http://github.com/jeroenooms/opencpu.js
@@ -12,6 +12,11 @@
  * ocpu.seturl("//public.opencpu.org/ocpu/library/mypackage/R") //CORS
  * ocpu.seturl("/ocpu/library/mypackage/R") //hardcode path
  */
+
+//Warning for the newbies
+if(!window.jQuery) {
+  alert("Could not find jQuery! The HTML must include jquery.js before opencpu.js!")
+}
 
 (function ( $ ) {
 
