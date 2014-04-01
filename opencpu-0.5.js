@@ -247,9 +247,16 @@ if(!window.jQuery) {
       //call success handler as well
       if(cb) cb(tmp);
     }).always(function(){
-      myplot.spinner.hide();      
+      myplot.spinner.hide();
     });
   };
+
+  $.fn.graphic = function(session, n){
+    n = n || "last"
+    var targetdiv = this;
+    var myplot = initplot(targetdiv);
+    myplot.setlocation(session.getLoc(), n);
+  }
   
   function initplot(targetdiv){
     if(targetdiv.data("ocpuplot")){
@@ -258,6 +265,7 @@ if(!window.jQuery) {
     var ocpuplot = function(){
       //local variables
       var Location;
+      var n = "last";
       var pngwidth;
       var pngheight;
       
@@ -267,7 +275,7 @@ if(!window.jQuery) {
       
       var spinner = $('<span />').attr({
         style : "position: absolute; top: 20px; left: 20px; z-index:1000; font-family: monospace;" 
-      }).text("loading...").appendTo(plotdiv);
+      }).text("loading...").appendTo(plotdiv).hide();
 
       var pdf = $('<a />').attr({
         target: "_blank",        
@@ -288,10 +296,11 @@ if(!window.jQuery) {
         if(!Location) return;
         pngwidth = plotdiv.width();
         pngheight = plotdiv.height();
-        plotdiv.css("background-image", "url(" + Location + "graphics/last/png?width=" + pngwidth + "&height=" + pngheight + ")");       
+        plotdiv.css("background-image", "url(" + Location + "graphics/" + n + "/png?width=" + pngwidth + "&height=" + pngheight + ")");       
       }
       
-      function setlocation(newloc){
+      function setlocation(newloc, newn){
+        n = newn || n;
         Location = newloc;
         if(!Location){
           pdf.hide();
@@ -299,9 +308,9 @@ if(!window.jQuery) {
           png.hide();
           plotdiv.css("background-image", "");
         } else {
-          pdf.attr("href", Location + "graphics/last/pdf?width=11.69&height=8.27&paper=a4r").show();
-          svg.attr("href", Location + "graphics/last/svg?width=11&height=6").show();
-          png.attr("href", Location + "graphics/last/png?width=800&height=600").show(); 
+          pdf.attr("href", Location + "graphics/" + n + "/pdf?width=11.69&height=8.27&paper=a4r").show();
+          svg.attr("href", Location + "graphics/" + n + "/svg?width=11&height=6").show();
+          png.attr("href", Location + "graphics/" + n + "/png?width=800&height=600").show(); 
           updatepng();
         }
       }
