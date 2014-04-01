@@ -252,10 +252,7 @@ if(!window.jQuery) {
   };
 
   $.fn.graphic = function(session, n){
-    n = n || "last"
-    var targetdiv = this;
-    var myplot = initplot(targetdiv);
-    myplot.setlocation(session.getLoc(), n);
+    initplot(this).setlocation(session.getLoc(), n || "last");
   }
   
   function initplot(targetdiv){
