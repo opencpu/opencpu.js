@@ -230,11 +230,50 @@ if(!window.jQuery) {
     });
   }
   
+  $.fn.extend({
+      union: function(array1, array2) {
+          var hash = {}, union = [];
+          $.each($.merge($.merge([], array1), array2), function (index, value) { hash[value] = value; });
+          $.each(hash, function (key, value) { union.push(key); } );
+          return union;
+      }
+  });
+
   //plotting widget
   //to be called on an (empty) div.
-  $.fn.rplot = function(fun, args, cb) {
+  $.fn.rplot = function(fun, args, opts, cb) {
     var targetdiv = this;
-    var myplot = initplot(targetdiv);
+
+    if (opts instanceof Function){
+      //pass on to third arg
+      cb = opts;
+      opts = {};
+    }
+
+    opts = opts || {};
+    defopts = {
+      dev: 'png',
+      links: [ 'pdf', 'svg', 'png' ],
+      pdf: { width: 11.69, height: 8.27, paper:'a4r' },
+      svg: { width: 11, height: 6 },
+      png: { width: 800, height: 600 },
+    }
+    // this might bite the user if they override pdf width/height and
+    // keep paper='a4r' ... other option is to not do a deep copy
+    // (remove "true" as first argument)
+    opts = $.extend(true, {}, defopts, opts)
+
+    if ((typeof(opts.links) === 'boolean') && opts.links) {
+      opts.links = defopts.links;
+    } else {
+      opts.links = [];
+    };
+
+    if ($.inArray(opts.dev, [ 'pdf', 'svg', 'png' ]) === -1) {
+      opts.dev = defopts.dev
+    }
+
+    var myplot = initplot(targetdiv, opts);
 
     //reset state
     myplot.setlocation();
@@ -255,10 +294,11 @@ if(!window.jQuery) {
     initplot(this).setlocation(session.getLoc(), n || "last");
   }
   
-  function initplot(targetdiv){
+  function initplot(targetdiv, opts){
     if(targetdiv.data("ocpuplot")){
       return targetdiv.data("ocpuplot");
     }
+
     var ocpuplot = function(){
       //local variables
       var Location;
@@ -274,21 +314,32 @@ if(!window.jQuery) {
         style : "position: absolute; top: 20px; left: 20px; z-index:1000; font-family: monospace;" 
       }).text("loading...").appendTo(plotdiv).hide();
 
-      var pdf = $('<a />').attr({
-        target: "_blank",        
-        style: "position: absolute; top: 10px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
-      }).text("pdf").appendTo(plotdiv);
+      stepdown = 10;
+      var pdf = $('');
+      var svg = $('');
+      var png = $('');
+      opts.links.forEach(function(ll) {
+        if (ll === "pdf") {
+          pdf = $('<a />').attr({
+            target: "_blank",
+            style: "position: absolute; top: " + stepdown + "px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
+          }).text("pdf").appendTo(plotdiv);
+          stepdown += 20;
+        } else if (ll === "svg") {
+          svg = $('<a />').attr({
+            target: "_blank",
+            style: "position: absolute; top: " + stepdown + "px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
+          }).text("svg").appendTo(plotdiv);
+          stepdown += 20;
+        } else if (ll === "png") {
+          png = $('<a />').attr({
+            target: "_blank",
+            style: "position: absolute; top: " + stepdown + "px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
+          }).text("png").appendTo(plotdiv);
+          stepdown += 20;
+        };
+      });
 
-      var svg = $('<a />').attr({
-        target: "_blank",
-        style: "position: absolute; top: 30px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
-      }).text("svg").appendTo(plotdiv);
-
-      var png = $('<a />').attr({
-        target: "_blank",
-        style: "position: absolute; top: 50px; right: 10px; z-index:1000; text-decoration:underline; font-family: monospace;"
-      }).text("png").appendTo(plotdiv);  
-      
       function updatepng(){
         if(!Location) return;
         pngwidth = plotdiv.width();
@@ -305,9 +356,9 @@ if(!window.jQuery) {
           png.hide();
           plotdiv.css("background-image", "");
         } else {
-          pdf.attr("href", Location + "graphics/" + n + "/pdf?width=11.69&height=8.27&paper=a4r").show();
-          svg.attr("href", Location + "graphics/" + n + "/svg?width=11&height=6").show();
-          png.attr("href", Location + "graphics/" + n + "/png?width=800&height=600").show(); 
+          pdf.attr("href", Location + "graphics/" + n + "/pdf?" + jQuery.param(opts.pdf)).show();
+          svg.attr("href", Location + "graphics/" + n + "/svg?" + jQuery.param(opts.svg)).show();
+          png.attr("href", Location + "graphics/" + n + "/png?" + jQuery.param(opts.png)).show();
           updatepng();
         }
       }
