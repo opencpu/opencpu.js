@@ -162,7 +162,7 @@ if(!window.jQuery) {
   function r_fun_call_json(fun, args, handler){
     return r_fun_ajax(fun, {
       data: JSON.stringify(args || {}),
-      contentType : 'application/json',      
+      contentType : 'application/json'
     }, handler);
   }   
   
