@@ -405,7 +405,7 @@ if (typeof console == "undefined") {
   
     //plotting widget
     //to be called on an (empty) div.
-    plot = function(div, fun, args, cb) {
+    function plot(div, fun, args, cb) {
       var targetdiv = $(div);
       var myplot = initplot(targetdiv);
 
