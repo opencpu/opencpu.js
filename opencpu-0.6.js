@@ -14,7 +14,7 @@
  * //Exported functions
  * mypackage.call("myfun", {arg: "value"}, mycallback(tmp){})
  * mypackage.rpc("myfun", {arg: "value"}, mycallback(tmp){})
- * mypackage.plot($("mydiv"), "myfun", {arg: "value"}, mycallback(tmp){})
+ * mypackage.plot($("#mydiv"), "myfun", {arg: "value"}, mycallback(tmp){})
  *
  */
 
