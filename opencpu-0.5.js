@@ -369,7 +369,8 @@ if(!window.jQuery) {
   var ocpu = window.ocpu;
   
   //global settings
-  function seturl(newpath){
+  function seturl(newpath, success){
+    success = success || function(){};
     if(!newpath.match("/R$")){
       alert("ERROR! Trying to set R url to: " + newpath +". Path to an OpenCPU R package must end with '/R'");
     } else {
@@ -397,6 +398,8 @@ if(!window.jQuery) {
       //we use trycatch because javascript will throw an error in case CORS is refused.
       $.get(r_path.href, function(resdata){
         console.log("Path updated. Available objects/functions:\n" + resdata);
+        success(newpath);
+
       }).fail(function(xhr, textStatus, errorThrown){
         alert("Connection to OpenCPU failed:\n" + textStatus + "\n" + xhr.responseText + "\n" + errorThrown);
       });
