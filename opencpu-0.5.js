@@ -25,6 +25,23 @@ if(!window.jQuery) {
   var r_path = document.createElement('a');
   r_path.href = "../R";
 
+  //export
+  window.ocpu = window.ocpu || {};
+  var ocpu = window.ocpu;
+  ocpu.useAlerts = true;
+  ocpu.enableLogging = true;
+
+  function log(msg) {
+    if (ocpu.enableLogging && typeof console != "undefined") {
+      console.log(msg);
+    }
+  }
+
+  function alert(msg) {
+    if (ocpu.useAlerts) {
+      window.alert(msg);
+    }
+  }
 
   //new Session()
   function Session(loc, key, txt){
@@ -141,8 +158,8 @@ if(!window.jQuery) {
     
     //ajax call
     var jqxhr = $.ajax(settings).done(function(){
-      var loc = jqxhr.getResponseHeader('Location') || console.log("Location response header missing.");
-      var key = jqxhr.getResponseHeader('X-ocpu-session') || console.log("X-ocpu-session response header missing.");
+      var loc = jqxhr.getResponseHeader('Location') || log("Location response header missing.");
+      var key = jqxhr.getResponseHeader('X-ocpu-session') || log("X-ocpu-session response header missing.");
       var txt = jqxhr.responseText;
       
       //in case of cors we translate relative paths to the target domain
@@ -151,7 +168,7 @@ if(!window.jQuery) {
       }
       handler(new Session(loc, key, txt));
     }).fail(function(){
-      console.log("OpenCPU error HTTP " + jqxhr.status + "\n" + jqxhr.responseText);
+      log("OpenCPU error HTTP " + jqxhr.status + "\n" + jqxhr.responseText);
     });
     
     //function chaining
@@ -225,7 +242,7 @@ if(!window.jQuery) {
       session.getObject(function(data){
         if(handler) handler(data);
       }).fail(function(){
-        console.log("Failed to get JSON response for " + session.getLoc());
+        log("Failed to get JSON response for " + session.getLoc());
       });
     });
   }
@@ -364,14 +381,14 @@ if(!window.jQuery) {
     }    
   }
   
-  //export
-  window.ocpu = window.ocpu || {};
-  var ocpu = window.ocpu;
-  
   //global settings
   function seturl(newpath){
+    var message; // for error messages
+    var deferredResult = $.Deferred();
     if(!newpath.match("/R$")){
-      alert("ERROR! Trying to set R url to: " + newpath +". Path to an OpenCPU R package must end with '/R'");
+      message = "ERROR! Trying to set R url to: " + newpath + ". Path to an OpenCPU R package must end with '/R'";
+      alert(message);
+      deferredResult.reject({name: "Invalid OpenCPU url", message: message});
     } else {
       r_path = document.createElement('a');
       r_path.href = newpath;
@@ -380,28 +397,35 @@ if(!window.jQuery) {
       if(location.protocol != r_path.protocol || location.host != r_path.host){
         r_cors = true;
         if (!('withCredentials' in new XMLHttpRequest())) {
-          alert("This browser does not support CORS. Try using Firefox or Chrome.");
+          message = "This browser does not support CORS. Try using Firefox or Chrome.";
+          alert(message);
+          deferredResult.reject({name: "No CORS support", message: message});
         }
       }
 
       if(location.protocol == "https:" && r_path.protocol != "https:"){
-        alert("Page is hosted on HTTPS but using a (non-SSL) HTTP OpenCPU server. This is insecure and most browsers will not allow this.")
+        message = "Page is hosted on HTTPS but using a (non-SSL) HTTP OpenCPU server. This is insecure and most browsers will not allow this.";
+        alert(message);
+        deferredResult.reject({name: "Using HTTP OpenCPU from HTTPS page", message: message});
       }
 
       if(r_cors){
-        console.log("Setting path to CORS server " + r_path.href);
+        log("Setting path to CORS server " + r_path.href);
       } else {
-        console.log("Setting path to local (non-CORS) server " + r_path.href);
+        log("Setting path to local (non-CORS) server " + r_path.href);
       }
 
       //we use trycatch because javascript will throw an error in case CORS is refused.
       return $.get(r_path.href, function(resdata){
-        console.log("Path updated. Available objects/functions:\n" + resdata);
+        log("Path updated. Available objects/functions:\n" + resdata);
 
       }).fail(function(xhr, textStatus, errorThrown){
-        alert("Connection to OpenCPU failed:\n" + textStatus + "\n" + xhr.responseText + "\n" + errorThrown);
+        message = "Connection to OpenCPU failed:\n" + textStatus + "\n" + xhr.responseText + "\n" + errorThrown;
+        alert(message);
+        deferredResult.reject({name: "OpenCPU connection failed", message: message});
       });
     }
+    return deferredResult.promise();
   }
 
   //exported functions
