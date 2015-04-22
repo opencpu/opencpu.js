@@ -145,7 +145,7 @@ if(!window.jQuery) {
       settings.headers = {
         "Authorization": "Basic " + btoa(r_path.username + ":" + r_path.password)
       }
-      settings.xhrFields: {
+      settings.xhrFields = {
         withCredentials: true
       }
     }
