@@ -141,6 +141,7 @@ if(!window.jQuery) {
     settings.dataType = settings.dataType || "text";
 
     //set user-pass for basic auth
+    console.log(r_path)
     if(r_path.username && r_path.password) {
       console.log("Using basic auth headers!")
       settings.headers = {
