@@ -43,7 +43,12 @@ if(!window.jQuery) {
     };
 
     this.getFileURL = function(path){
-      return this.getLoc() + "files/" + path;
+      var new_url = document.createElement('a');
+      new_url.href = this.getLoc() + "files/" + path;
+      new_url.username = r_path.username;
+      new_url.password = r_path.password
+      console.log("file url: " + new_url.href)
+      return new_url.href;
     };
 
     this.getFile = function(path, success){
