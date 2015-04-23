@@ -140,21 +140,6 @@ if(!window.jQuery) {
     settings.data = settings.data || {};
     settings.dataType = settings.dataType || "text";
 
-    //set user-pass for basic auth
-    console.log(r_path)
-    if(r_path.username && r_path.password) {
-      console.log("Using basic auth headers!")
-      settings.xhrFields = {withCredentials: true}
-      settings.username = r_path.username;
-      settings.password = r_path.password;
-
-      /*
-      settings.headers = {"Authorization": "Basic " + btoa(r_path.username + ":" + r_path.password)}
-      */
-
-
-    }
-
     //ajax call
     var jqxhr = $.ajax(settings).done(function(){
       var loc = jqxhr.getResponseHeader('Location') || console.log("Location response header missing.");
@@ -397,6 +382,18 @@ if(!window.jQuery) {
         r_cors = true;
         if (!('withCredentials' in new XMLHttpRequest())) {
           alert("This browser does not support CORS. Try using Firefox or Chrome.");
+        } else if(r_path.username && r_path.password) {
+          //should only do this for calls to opencpu maybe
+          console.log("Adding auth beforeSend")
+          $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+              console.log("Using basic auth headers!")
+              settings.username = r_path.username;
+              settings.password = r_path.password;
+              settings.xhrFields = || settings.xhrFields {};
+              settings.xhrFields.withCredentials = true;
+            }
+          });
         }
       }
 
