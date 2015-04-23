@@ -392,6 +392,7 @@ if(!window.jQuery) {
               settings.password = r_path.password;
               settings.xhrFields = || settings.xhrFields {};
               settings.xhrFields.withCredentials = true;
+              settings.crossDomain = true;
             }
           });
         }
