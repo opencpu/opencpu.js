@@ -47,7 +47,6 @@ if(!window.jQuery) {
       new_url.href = this.getLoc() + "files/" + path;
       new_url.username = r_path.username;
       new_url.password = r_path.password
-      console.log("file url: " + new_url.href)
       return new_url.href;
     };
 
@@ -394,7 +393,7 @@ if(!window.jQuery) {
             beforeSend: function(xhr, settings) {
               //only use auth for ajax requests to ocpu
               if(regex.test(settings.url)){
-                console.log("Using basic auth headers!")
+                console.log("Using Basic Auth.")
                 settings.username = r_path.username;
                 settings.password = r_path.password;
                 settings.xhrFields = settings.xhrFields || {};
