@@ -390,7 +390,7 @@ if(!window.jQuery) {
               console.log("Using basic auth headers!")
               settings.username = r_path.username;
               settings.password = r_path.password;
-              settings.xhrFields = || settings.xhrFields {};
+              settings.xhrFields = settings.xhrFields || {};
               settings.xhrFields.withCredentials = true;
               settings.crossDomain = true;
             }
