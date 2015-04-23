@@ -144,12 +144,15 @@ if(!window.jQuery) {
     console.log(r_path)
     if(r_path.username && r_path.password) {
       console.log("Using basic auth headers!")
-      settings.headers = {
-        "Authorization": "Basic " + btoa(r_path.username + ":" + r_path.password)
-      }
-      settings.xhrFields = {
-        withCredentials: true
-      }
+      settings.xhrFields = {withCredentials: true}
+      settings.username = r_path.username;
+      settings.password = r_path.password;
+
+      /*
+      settings.headers = {"Authorization": "Basic " + btoa(r_path.username + ":" + r_path.password)}
+      */
+
+
     }
 
     //ajax call
