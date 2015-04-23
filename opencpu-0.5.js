@@ -384,15 +384,18 @@ if(!window.jQuery) {
           alert("This browser does not support CORS. Try using Firefox or Chrome.");
         } else if(r_path.username && r_path.password) {
           //should only do this for calls to opencpu maybe
-          console.log("Adding auth beforeSend")
+          var regex = new RegExp(r_path.host);
           $.ajaxSetup({
             beforeSend: function(xhr, settings) {
-              console.log("Using basic auth headers!")
-              settings.username = r_path.username;
-              settings.password = r_path.password;
-              settings.xhrFields = settings.xhrFields || {};
-              settings.xhrFields.withCredentials = true;
-              settings.crossDomain = true;
+              //only use auth for ajax requests to ocpu
+              if(regex.test(settings.url)){
+                console.log("Using basic auth headers!")
+                settings.username = r_path.username;
+                settings.password = r_path.password;
+                settings.xhrFields = settings.xhrFields || {};
+                settings.xhrFields.withCredentials = true;
+                settings.crossDomain = true;
+              }
             }
           });
         }
