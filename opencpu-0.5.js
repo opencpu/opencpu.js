@@ -399,8 +399,8 @@ if(!window.jQuery) {
                 /* take out user:pass from target url */
                 var target = document.createElement('a');
                 target.href = settings.url;
-                target.username = null
-                target.password = null
+                delete target.username;
+                delete target.password;
                 settings.url = target.href
 
                 /* set basic auth header */
