@@ -394,8 +394,17 @@ if(!window.jQuery) {
               //only use auth for ajax requests to ocpu
               if(regex.test(settings.url)){
                 console.log("Using Basic Auth.")
-                settings.username = r_path.username;
-                settings.password = r_path.password;
+                //settings.username = r_path.username;
+                //settings.password = r_path.password;
+
+                /* take out user:pass from target url */
+                var target = document.createElement('a');
+                target.href = settings.url;
+                target.username = null
+                target.password = null
+                settings.url = target.href
+
+                /* set basic auth header */
                 settings.xhrFields = settings.xhrFields || {};
                 settings.xhrFields.withCredentials = true;
                 settings.crossDomain = true;
