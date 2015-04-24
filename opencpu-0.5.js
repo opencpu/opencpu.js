@@ -399,9 +399,7 @@ if(!window.jQuery) {
                 /* take out user:pass from target url */
                 var target = document.createElement('a');
                 target.href = settings.url;
-                delete target.username;
-                delete target.password;
-                settings.url = target.href
+                settings.url = target.protocol + "//" + target.host + target.pathname
 
                 /* set basic auth header */
                 settings.xhrFields = settings.xhrFields || {};
