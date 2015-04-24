@@ -393,7 +393,6 @@ if(!window.jQuery) {
             beforeSend: function(xhr, settings) {
               //only use auth for ajax requests to ocpu
               if(regex.test(settings.url)){
-                console.log("Using Basic Auth.")
                 //settings.username = r_path.username;
                 //settings.password = r_path.password;
 
@@ -409,6 +408,9 @@ if(!window.jQuery) {
                 settings.xhrFields.withCredentials = true;
                 settings.crossDomain = true;
                 xhr.setRequestHeader("Authorization", "Basic " + btoa(r_path.username + ":" + r_path.password));
+
+                /* debug */
+                console.log("Authenticated request to: " + settings.url + " (" + r_path.username + ", " + r_path.password + ")")
               }
             }
           });
