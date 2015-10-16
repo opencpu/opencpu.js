@@ -28,16 +28,17 @@ if(!window.jQuery) {
 
 
   //new Session()
-  function Session(loc, key, txt){
+  function Session(loc, key, txt, force){
     this.loc = loc;
     this.key = key;
     this.txt = txt;
+    this.force = force;
     this.output = txt.split(/\r\n|\r|\n/g);
 
     this.getKey = function(){
       return key;
     };
-
+    
     this.getLoc = function(){
       return loc;
     };
@@ -67,6 +68,9 @@ if(!window.jQuery) {
       }
 
       var url = this.getLoc() + "R/" + name + "/json";
+      if(this.force) {
+        url = url + "?force=true";
+      }
       return $.get(url, data, success);
     };
 
@@ -154,7 +158,7 @@ if(!window.jQuery) {
       if(r_cors && loc.match("^/[^/]")){
         loc = r_path.protocol + "//" + r_path.host + loc;
       }
-      handler(new Session(loc, key, txt));
+      handler(new Session(loc, key, txt, ocpu.settings.force));
     }).fail(function(){
       console.log("OpenCPU error HTTP " + jqxhr.status + "\n" + jqxhr.responseText);
     });
@@ -439,6 +443,9 @@ if(!window.jQuery) {
   ocpu.call = r_fun_call;
   ocpu.rpc = rpc;
   ocpu.seturl = seturl;
+  ocpu.settings = {
+    force: false
+  }
 
   //exported constructors
   ocpu.Snippet = Snippet;
