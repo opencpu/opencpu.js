@@ -16,7 +16,7 @@
 
 //Warning for the newbies
 if(!window.jQuery) {
-  alert("Could not find jQuery! The HTML must include jquery.js before opencpu.js!")
+  alert("Could not find jQuery! The HTML must include jquery.js before opencpu.js!");
 }
 
 (function ( $ ) {
@@ -72,6 +72,11 @@ if(!window.jQuery) {
 
     this.getStdout = function(success){
       var url = this.getLoc() + "stdout/text";
+      return $.get(url, success);
+    };
+
+    this.getSource = function(success){
+      var url = this.getLoc() + "source/text";
       return $.get(url, success);
     };
 
