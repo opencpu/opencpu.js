@@ -75,6 +75,11 @@ if(!window.jQuery) {
       return $.get(url, success);
     };
 
+    this.getSource = function(success){
+      var url = this.getLoc() + "source/text";
+      return $.get(url, success);
+    };
+
     this.getConsole = function(success){
       var url = this.getLoc() + "console/text";
       return $.get(url, success);
